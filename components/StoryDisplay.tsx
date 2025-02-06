@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useCallback } from 'react';
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Typewriter from "./Typewriter";
 
 interface StoryOption {
@@ -31,29 +33,33 @@ const StoryDisplay = ({ stories }: { stories: Story[] }) => {
   }, []);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-w-2xl mx-auto">
       {stories.map((story, index) => (
         states.includes(story.node_id) ? (
-          <div key={`story-${story._id || index}`} className="p-4 border rounded-lg dark:border-gray-700 dark:bg-gray-800">
-            <h3 className="font-bold dark:text-white">{story.title}</h3>
-            <Typewriter 
-              text={story.content} 
-              onComplete={handleComplete}
-            />
-            {showOptions && story.options.length > 0 && (
-              <div className="flex flex-col mt-2 gap-2">
-                {story.options.map((option, optIndex) => (
-                  <button
-                    key={`option-${option._id || optIndex}`}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                    onClick={() => handleOptionClick(option.nextId)}
-                  >
-                    {option.text}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          <Card key={`story-${story._id || index}`}>
+            <CardHeader>
+              <CardTitle>{story.title}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Typewriter 
+                text={story.content} 
+                onComplete={handleComplete}
+              />
+              {showOptions && story.options.length > 0 && (
+                <div className="flex flex-col gap-2">
+                  {story.options.map((option, optIndex) => (
+                    <Button
+                      key={`option-${option._id || optIndex}`}
+                      variant="secondary"
+                      onClick={() => handleOptionClick(option.nextId)}
+                    >
+                      {option.text}
+                    </Button>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
         ) : null
       ))}
     </div>

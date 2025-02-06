@@ -8,8 +8,8 @@ interface TypewriterProps {
   onComplete?: () => void;
 }
 
-const Typewriter = ({ text, speed = 150, onComplete }: TypewriterProps) => {
-  const { displayedText, showCursor, isComplete } = useTypewriter(text, speed, onComplete);
+const Typewriter = ({ text, speed = 100, onComplete }: TypewriterProps) => {
+  const { displayedText, showCursor } = useTypewriter(text, speed, onComplete);
 
   return (
     <p className="text-gray-600 dark:text-gray-300">
