@@ -32,21 +32,23 @@ async function Page() {
         <div className="max-w-4xl mx-auto grid gap-6 md:grid-cols-2">
           {stories.length > 0 ? (
             stories.map((story) => (
-              <Link key={story._id} href={`/story/${story.story_id}`}>
-                <Card className="hover:bg-primary/5 transition-all duration-200 cursor-pointer h-full">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-xl line-clamp-2">{story.background}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center text-sm text-muted-foreground space-x-4">
-                      <div className="flex items-center">
-                        <CalendarIcon className="mr-1 h-4 w-4" />
-                        {formatDate(story.created_at)}
+              <div key={story._id}>
+                <Link href={`/story/${story.story_id}`}>
+                  <Card className="hover:bg-primary/5 transition-all duration-200 cursor-pointer h-full">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-xl line-clamp-2">{story.background}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center text-sm text-muted-foreground space-x-4">
+                        <div className="flex items-center">
+                          <CalendarIcon className="mr-1 h-4 w-4" />
+                          {formatDate(story.created_at)}
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </div>
             ))
           ) : (
             <div className="col-span-full">
