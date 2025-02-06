@@ -1,8 +1,13 @@
 import StoryDisplay from "@/components/StoryDisplay";
 
-async function Page() {
+async function Page({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/story/f8c3a128-5efa-4996-a509-2fced200ebde`);
+    const storyId = searchParams.storyId || '66f1172e-fd98-43ed-b75b-5f6246ba3f67';
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/story/${storyId}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
