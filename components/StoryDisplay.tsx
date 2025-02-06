@@ -20,7 +20,7 @@ interface Story {
 }
 
 const StoryDisplay = ({ stories }: { stories: Story[] }) => {
-  const [states, setStates] = useState(["1"]);
+  const [states, setStates] = useState(["0"]);
   const [showOptions, setShowOptions] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +39,7 @@ const StoryDisplay = ({ stories }: { stories: Story[] }) => {
 
   return (
     <div className="fixed inset-x-0 bottom-0 p-4">
-      <div className="max-w-2xl mx-auto space-y-4 max-h-[80vh] overflow-y-auto pb-4">
+      <div className="max-w-2xl mx-auto space-y-4 overflow-y-auto pb-4">
         {stories.map((story, index) => (
           states.includes(story.node_id) ? (
             <Card key={`story-${story._id || index}`} className="bg-primary-foreground">

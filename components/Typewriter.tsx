@@ -8,7 +8,7 @@ interface TypewriterProps {
   onComplete?: () => void;
 }
 
-const Typewriter = ({ text, speed = 100, onComplete }: TypewriterProps) => {
+const Typewriter = ({ text, speed = 50, onComplete }: TypewriterProps) => {
   const { displayedText, showCursor } = useTypewriter(text, speed, onComplete);
 
   return (

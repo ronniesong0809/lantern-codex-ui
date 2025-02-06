@@ -2,7 +2,7 @@ import StoryDisplay from "@/components/StoryDisplay";
 
 async function Page() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/story`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/story/f8c3a128-5efa-4996-a509-2fced200ebde`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -10,8 +10,8 @@ async function Page() {
 
     return (
       <main className="min-h-screen bg-background">
-        {stories.length > 0 ? (
-          <StoryDisplay stories={stories} />
+        {(stories.chapters && stories.chapters.length > 0) ? (
+          <StoryDisplay stories={stories.chapters} />
         ) : (
           <p className="text-center text-muted-foreground">No stories found</p>
         )}

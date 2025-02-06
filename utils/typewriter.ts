@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-export const useTypewriter = (text: string, speed: number = 100, onComplete?: () => void) => {
+export const useTypewriter = (text: string, speed: number = 50, onComplete?: () => void) => {
   const [displayedText, setDisplayedText] = useState("");
   const [showCursor, setShowCursor] = useState(true);
   const [isComplete, setIsComplete] = useState(false);
