@@ -2,23 +2,29 @@
 
 import { useState, useEffect } from "react";
 
-export const useTypewriter = (text: string, speed: number = 100) => {
+export const useTypewriter = (text: string, speed: number = 100, onComplete?: () => void) => {
   const [displayedText, setDisplayedText] = useState("");
   const [showCursor, setShowCursor] = useState(true);
+  const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
     let index = 0;
+    setDisplayedText("");
+    setIsComplete(false);
+
     const timer = setInterval(() => {
       if (index < text.length) {
         setDisplayedText((prev) => prev + text.charAt(index));
         index++;
       } else {
         clearInterval(timer);
+        setIsComplete(true);
+        onComplete?.();
       }
     }, speed);
 
     return () => clearInterval(timer);
-  }, [text, speed]);
+  }, [text, speed, onComplete]);
 
   useEffect(() => {
     const cursorInterval = setInterval(() => {
@@ -27,5 +33,5 @@ export const useTypewriter = (text: string, speed: number = 100) => {
     return () => clearInterval(cursorInterval);
   }, []);
 
-  return { displayedText, showCursor };
+  return { displayedText, showCursor, isComplete };
 };

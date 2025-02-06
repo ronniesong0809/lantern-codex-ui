@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Typewriter from "./Typewriter";
 
 interface StoryOption {
@@ -19,10 +19,16 @@ interface Story {
 
 const StoryDisplay = ({ stories }: { stories: Story[] }) => {
   const [states, setStates] = useState(["1"]);
+  const [showOptions, setShowOptions] = useState(false);
 
   const handleOptionClick = (nodeId: string) => {
     setStates([nodeId]);
+    setShowOptions(false);
   };
+
+  const handleComplete = useCallback(() => {
+    setShowOptions(true);
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -30,18 +36,23 @@ const StoryDisplay = ({ stories }: { stories: Story[] }) => {
         states.includes(story.node_id) ? (
           <div key={`story-${story._id || index}`} className="p-4 border rounded-lg dark:border-gray-700 dark:bg-gray-800">
             <h3 className="font-bold dark:text-white">{story.title}</h3>
-            <Typewriter text={story.content} />
-            {story.options.length > 0 && <div className="flex flex-col mt-2 gap-2">
-              {story.options.map((option, optIndex) => (
-                <button
-                  key={`option-${option._id || optIndex}`}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                  onClick={() => handleOptionClick(option.nextId)}
-                >
-                  {option.text}
-                </button>
-              ))}
-            </div>}
+            <Typewriter 
+              text={story.content} 
+              onComplete={handleComplete}
+            />
+            {showOptions && story.options.length > 0 && (
+              <div className="flex flex-col mt-2 gap-2">
+                {story.options.map((option, optIndex) => (
+                  <button
+                    key={`option-${option._id || optIndex}`}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                    onClick={() => handleOptionClick(option.nextId)}
+                  >
+                    {option.text}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         ) : null
       ))}
