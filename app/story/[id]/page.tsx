@@ -1,6 +1,17 @@
 import StoryDisplay from "@/components/StoryDisplay";
+import { StoryResponse, StoryNode, StoryOption } from "@/types/story";
 
 type Params = Promise<{ id: string }>
+
+function processStoryOption(option: any): StoryOption {
+  return {
+    _id: option._id,
+    text: option.text,
+    nextId: option.nextId,
+    ...(option.check && { check: option.check }),
+    ...(option.requirements && { requirements: option.requirements })
+  };
+}
 
 async function Page(props: { params: Params }) {
   try {
@@ -9,12 +20,20 @@ async function Page(props: { params: Params }) {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const stories = await response.json();
+    const storiesResponse: StoryResponse = await response.json();
+    const stories = storiesResponse.chapters.map(chapter => {
+      const processedChapter = {
+        ...chapter,
+        options: chapter.options.map(processStoryOption)
+      };
+
+      return processedChapter as StoryNode;
+    });
 
     return (
       <main className="min-h-screen bg-background">
-        {(stories.chapters && stories.chapters.length > 0) ? (
-          <StoryDisplay stories={stories.chapters} />
+        {stories.length > 0 ? (
+          <StoryDisplay stories={stories} />
         ) : (
           <p className="text-center text-muted-foreground">No stories found</p>
         )}
