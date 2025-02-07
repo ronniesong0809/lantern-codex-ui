@@ -3,13 +3,10 @@ import { StoryResponse, StoryNode, StoryOption } from "@/types/story";
 
 type Params = Promise<{ id: string }>
 
-function processStoryOption(option: any): StoryOption {
+function processStoryOption(option: StoryOption): StoryOption {
   return {
-    _id: option._id,
     text: option.text,
     nextId: option.nextId,
-    ...(option.check && { check: option.check }),
-    ...(option.requirements && { requirements: option.requirements })
   };
 }
 
