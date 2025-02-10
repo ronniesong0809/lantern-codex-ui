@@ -22,7 +22,7 @@ export default function CombatPage() {
   const [combatLog, setCombatLog] = useState<string[]>([]);
 
   useEffect(() => {
-    let weapon = WeaponManager;
+    const weapon = WeaponManager;
     setPlayer(new Character("Ronnie", 1, 100, 5, weapon.axe, 14));
     setEnemies([
       new Character("Goblin", 1, 80, 5, weapon.claw, 15),

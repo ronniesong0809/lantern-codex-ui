@@ -1,3 +1,4 @@
+import { Character } from "@/lib/Character";
 import { Effect } from "@/lib/effect/Effect";
 import { DamageDice } from "@/types/story";
 import { Dice } from "@/utils/dice";
@@ -16,9 +17,9 @@ export class Lifesteal extends Effect {
     ];
   }
 
-  applyToSelf(context: { character: any; logs: string[] }) {
+  applyToSelf(context: { character: Character; logs: string[] }) {
     const value = Dice.roll(this.damageDice.sides, this.damageDice.count);
-    context.character.hp += value;
+    context.character.health += value;
     const log = this.descriptions[Math.floor(Math.random() * this.descriptions.length)];
     context.logs.push(`${log} (recover ${value} hp)`);
   }

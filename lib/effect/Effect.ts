@@ -1,3 +1,5 @@
+import { Character } from "@/lib/Character";
+
 export abstract class Effect {
   name: string;
   priority: number;
@@ -9,11 +11,11 @@ export abstract class Effect {
     this.description = description;
   }
 
-  applyToSelf?(context: { character: any; logs: string[] }): void;
-  applyToDefender?(context: { defender: any; logs: string[] }): void;
-  applyToBoth?(context: { character: any; defender: any; logs: string[] }): void;
+  applyToSelf?(context: { character: Character; logs: string[] }): void;
+  applyToDefender?(context: { defender: Character; logs: string[] }): void;
+  applyToBoth?(context: { character: Character; defender: Character; logs: string[] }): void;
 
-  apply(context: { character: any; defender: any; logs: string[] }) {
+  apply(context: { character: Character; defender: Character; logs: string[] }) {
     if (this.applyToSelf) this.applyToSelf(context);
     if (this.applyToDefender) this.applyToDefender(context);
     if (this.applyToBoth) this.applyToBoth(context);

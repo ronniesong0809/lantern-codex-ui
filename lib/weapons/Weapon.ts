@@ -1,7 +1,6 @@
 import { Effect } from "@/lib/effect/Effect";
 import { DamageDice } from "@/types/story";
 import { Character } from "../Character";
-import { Dice } from "@/utils/dice";
 import { addLog } from "../logger";
 
 export abstract class Weapon {
@@ -20,7 +19,7 @@ export abstract class Weapon {
   abstract rollDamage(): number;
 
   applyEffects(character: Character, defender: Character) {
-    let logs: string[] = [];
+    const logs: string[] = [];
 
     const contextSelf = { character, logs };
     const contextDefender = { defender, logs };
