@@ -14,7 +14,7 @@ export class CombatSystem {
     }
 
     const attackRoll = Dice.roll(20);
-    let log = `[${attacker.name}] attacks [${defender.name}] with ${attacker.damageDice.count}d${attacker.damageDice.sides}`;
+    let log = `[${attacker.name}] attacks [${defender.name}] with ${attacker.weapon.name}(${attacker.weapon.damageDice.count}d${attacker.weapon.damageDice.sides})`;
 
     if (attackRoll === 1) {
       addLog(`${log}, 1 critical failure!`);
@@ -25,7 +25,7 @@ export class CombatSystem {
     log = `${log}, rolls ${attackRoll}+${attacker.attackBonus}`;
 
     if (attackRoll === 20 || totalAttack >= defender.armorClass) {
-      const damageRoll = Dice.roll(attacker.damageDice.sides, attacker.damageDice.count);
+      const damageRoll = Dice.roll(attacker.weapon.damageDice.sides, attacker.weapon.damageDice.count);
       let totalDamage = damageRoll + attacker.attackBonus;
 
       if (attackRoll === 20) {
@@ -43,5 +43,11 @@ export class CombatSystem {
       log = `${log} (${defender.name} ac:${defender.armorClass}, MISS)`;
     }
     addLog(log);
+  }
+
+  static skill(attacker: Character, defender: Character) {
+    attacker.weapon.rollDamage();
+    attacker.weapon.applyEffects(attacker, defender);
+    
   }
 }

@@ -24,3 +24,8 @@ export interface StoryState {
   currentNodeId: string;
   visitedNodes: Set<string>;
 } 
+
+export interface DamageDice {
+  count: number;
+  sides: number;
+}

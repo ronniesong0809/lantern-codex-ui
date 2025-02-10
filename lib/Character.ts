@@ -1,21 +1,24 @@
 import { StatusEffect } from "./StatusEffect";
 import { addLog } from "./logger";
+import { Weapon } from "./weapons/Weapon";
 
 export class Character {
   name: string;
+  level: number;
   health: number;
   attackBonus: number;
   armorClass: number;
-  damageDice: { sides: number; count: number };
+  weapon: Weapon;
   statusEffects: StatusEffect[] = [];
   isStunned: boolean = false;
 
-  constructor(name: string, health: number, attackBonus: number, armorClass: number, damageDice: { sides: number; count: number }) {
+  constructor(name: string, level: number, health: number, attackBonus: number, weapon: Weapon, armorClass: number) {
     this.name = name;
+    this.level = level;
     this.health = health;
     this.attackBonus = attackBonus;
+    this.weapon = weapon;
     this.armorClass = armorClass;
-    this.damageDice = damageDice;
   }
 
   isAlive() {
@@ -45,10 +48,11 @@ export class Character {
   clone(): Character {
     const cloned = new Character(
       this.name,
+      this.level,
       this.health,
       this.attackBonus,
+      this.weapon,
       this.armorClass,
-      {...this.damageDice}
     );
     cloned.isStunned = this.isStunned;
     cloned.statusEffects = [...this.statusEffects];

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/hover-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CharacterStats } from '@/components/CharacterStats';
+import { WeaponManager } from '@/lib/weapons/WeaponManager';
 
 export default function CombatPage() {
   const [player, setPlayer] = useState<Character | null>(null);
@@ -21,12 +22,13 @@ export default function CombatPage() {
   const [combatLog, setCombatLog] = useState<string[]>([]);
 
   useEffect(() => {
-    setPlayer(new Character("Ronnie", 100, 5, 14, { sides: 12, count: 1 }));
+    let weapon = WeaponManager;
+    setPlayer(new Character("Ronnie", 1, 100, 5, weapon.axe, 14));
     setEnemies([
-      new Character("Goblin", 80, 5, 15, { sides: 8, count: 1 }),
-      new Character("Skeleton", 40, 2, 8, { sides: 4, count: 1 }),
-      new Character("Bat", 20, 1, 4, { sides: 3, count: 1 }),
-      new Character("Bat", 20, 1, 4, { sides: 3, count: 1 }),
+      new Character("Goblin", 1, 80, 5, weapon.claw, 15),
+      new Character("Skeleton", 1, 40, 2, weapon.claw, 8),
+      new Character("Bat", 1, 20, 1, weapon.claw, 4),
+      new Character("Bat", 1, 20, 1, weapon.claw, 4),
     ]);
 
     const logListener = (message: string) => {
@@ -39,7 +41,7 @@ export default function CombatPage() {
     };
   }, []);
 
-  const handleAttack = () => {
+  const handleAttack = (type: number) => {
     if (!player || enemies.length === 0) return;
     player.processStatusEffects();
     enemies.forEach(enemy => enemy.processStatusEffects());
@@ -47,7 +49,11 @@ export default function CombatPage() {
     setCombatLog(prev => [...prev, "=== Your Turn ==="]);
 
     const target = enemies[selectedEnemy];
-    CombatSystem.attack(player, target);
+    if (type === 0) {
+      CombatSystem.attack(player, target);
+    } else {
+      CombatSystem.skill(player, target);
+    }
 
     setCombatLog(prev => [...prev, "=== Enemy Turn ==="]);
 
@@ -121,15 +127,15 @@ export default function CombatPage() {
 
       <div className="flex justify-center gap-4">
         <Button
-          onClick={handleAttack}
+          onClick={() => handleAttack(0)}
           disabled={!player.isAlive() || allEnemiesDefeated}
           size="lg"
         >
-          {player.damageDice.count}D{player.damageDice.sides}
+          {player.weapon.name}({player.weapon.damageDice.count}D{player.weapon.damageDice.sides})
         </Button>
 
         <Button
-          onClick={handleAttack}
+          onClick={() => handleAttack(1)}
           disabled={!player.isAlive() || allEnemiesDefeated}
           variant="secondary"
           size="lg"
